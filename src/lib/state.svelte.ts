@@ -58,6 +58,8 @@ function save() {
  * @param quantity quantity item
  */
 export function addBasket(item: Item, quantity?: number) {
+	if (includeItem(item)) return;
+	
 	const basket: Basket = {
 		id: uuidV4(),
 		quantity: quantity ?? 1,
@@ -104,13 +106,18 @@ export function getBasketCount(): number {
 }
 
 /**
- * 
+ * Clear all items.
  */
 export function clearBasket() {
 	state.baskets = [];
 	save();
 }
 
+/**
+ * Confirm that the item in basket
+ * @param item Target item.
+ * @returns Result that include or not the item.
+ */
 export function includeItem(item: Item): boolean {
 	return state.baskets.map((v) => v.item.id).includes(item.id);
 }

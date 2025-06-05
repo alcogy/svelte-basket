@@ -28,5 +28,6 @@ export default defineConfig({
 				}
 			}
 		]
-	}
+	},
+	resolve: process.env.VITEST ? { conditions: ['browser'] } : undefined
 });
