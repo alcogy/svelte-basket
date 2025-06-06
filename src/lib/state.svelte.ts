@@ -13,7 +13,7 @@ export interface Item {
  * Base type for basket.
  */
 export interface Basket {
-	id: number | string;
+	id: string;
 	item: Item;
 	quantity: number;
 }
@@ -56,8 +56,9 @@ function save() {
  * The item to basket.
  * @param item item data
  * @param quantity quantity item
+ * @returns new basket
  */
-export function addBasket(item: Item, quantity?: number) {
+export function addBasket<T extends Item>(item: T, quantity?: number) {
 	if (includeItem(item)) return;
 	
 	const basket: Basket = {
@@ -67,6 +68,8 @@ export function addBasket(item: Item, quantity?: number) {
 	}
 	state.baskets.push(basket);
 	save();
+
+	return basket;
 }
 
 /**
@@ -97,6 +100,14 @@ export function fetchAllBaskets(): Basket[] {
 	return state.baskets;
 }
 
+export function findBasketById(id: string): Basket | undefined {
+	return state.baskets.find((v) => v.id === id);
+}
+
+export function findBasketByItem<T extends Item>(item: T): Basket | undefined {
+	return state.baskets.find((v) => v.item.id === item.id);
+}
+
 /**
  * Retrieve basket data count.
  * @returns Current basket data count.
@@ -118,6 +129,6 @@ export function clearBasket() {
  * @param item Target item.
  * @returns Result that include or not the item.
  */
-export function includeItem(item: Item): boolean {
+export function includeItem<T extends Item>(item: T): boolean {
 	return state.baskets.map((v) => v.item.id).includes(item.id);
 }

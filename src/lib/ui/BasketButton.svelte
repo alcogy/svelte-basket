@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { addBasket, includeItem } from "$lib/state.svelte.js";
 	import type { Item } from "$lib/state.svelte.js";
+
 	let {
 		label = 'Add to basket',
 		disabled = false,
@@ -19,7 +20,10 @@
 	}
 </script>
 
-<button disabled={isDisabled} onclick={onClickEvent}>
+<button
+	disabled={isDisabled}
+	onclick={onClickEvent}
+>
 	{label}
 </button>
 

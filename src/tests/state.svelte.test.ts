@@ -1,6 +1,15 @@
 import { describe, test, expect, beforeEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
-import { addBasket, removeBasket, updateBasket, fetchAllBaskets, getBasketCount, clearBasket, includeItem } from '$lib/state.svelte.js';
+import type { Basket } from '$lib/state.svelte.js';
+import {
+	addBasket,
+	removeBasket,
+	updateBasket,
+	fetchAllBaskets,
+	getBasketCount,
+	clearBasket,
+	includeItem
+} from '$lib/state.svelte.js';
 
 describe('State control functions', () => {
 	const item = { id: 1 };
@@ -10,13 +19,15 @@ describe('State control functions', () => {
 		clearBasket();
 	})
 	test('addBasket', () => {
-		addBasket(item);
+		const basket1 = addBasket(item);
 		const count = getBasketCount();
 		expect(count).toBe(1);
+		expect(basket1).not.toBe(undefined);
 
-		addBasket(item);
+		const basket2 = addBasket(item);
 		const count2 = getBasketCount();
 		expect(count2).toBe(1);
+		expect(basket2).toBe(undefined);
 
 		addBasket(item2);
 		const count3 = getBasketCount();
@@ -24,30 +35,38 @@ describe('State control functions', () => {
 	});
 
 	test('removeBasket', () => {
-		addBasket(item);
+		const basket = addBasket(item) as Basket;
 		const count = getBasketCount();
 		expect(count).toBe(1);
-
-		const baskets = fetchAllBaskets();
-		removeBasket(baskets[0]);
+		
+		removeBasket(basket);
 
 		const count2 = getBasketCount();
 		expect(count2).toBe(0);
 	});
 
 	test('updateBasket', () => {
-		addBasket(item);
+		const basket = addBasket(item) as Basket;
 		const count = getBasketCount();
 		expect(count).toBe(1);
 		expect(includeItem(item)).toBe(true);
 		
-		const baskets = fetchAllBaskets();
-		baskets[0].item = item2;
-		updateBasket(baskets[0]);
+		basket.item = item2;
+		updateBasket(basket);
 
 		expect(count).toBe(1);
 		expect(includeItem(item)).toBe(false);
 		expect(includeItem(item2)).toBe(true);
+	});
 
+	test('fetchAllBaskets', () => {
+		const baskets1 = fetchAllBaskets();
+		expect(baskets1.length).toBe(0);
+
+		addBasket(item);
+		addBasket(item2);
+
+		const baskets2 = fetchAllBaskets();
+		expect(baskets2.length).toBe(2);
 	});
 });

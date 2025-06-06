@@ -2,6 +2,7 @@
 	import type { Item } from "$lib/state.svelte.js";
 	import { fetchAllBaskets, clearBasket, removeBasket, getBasketCount } from "$lib/state.svelte.js";
 	import BasketButton from "$lib/ui/BasketButton.svelte";
+	import QuantityButton from "$lib/ui/QuantityButton.svelte";
 
 	interface Product extends Item {
 		name: string;
@@ -20,7 +21,8 @@
 <h3>Product list</h3>
 <ul>
 {#each products as product }
-	<li>{product.name} <BasketButton item={product} /></li>
+	<!-- <li>{product.name} <BasketButton item={product} /></li> -->
+	<li>{product.name} <QuantityButton item={product} /></li>
 {/each}
 </ul>
 
@@ -35,3 +37,12 @@
 <div>
 	<button onclick={() => clearBasket()}>Clear basket</button>
 </div>
+
+
+<style>
+	li {
+		display: flex;
+		gap: 32px;
+		margin-top: 16px;
+	}
+</style>
