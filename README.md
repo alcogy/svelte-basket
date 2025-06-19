@@ -2,12 +2,7 @@
 A shopping cart library for Svelte. UI components and data management.
 
 
-## How to use
-
-### install
-```
-npm install -D svelte-basket
-```
+## Getting start
 
 ### Set up your product data.
 ```typescript
